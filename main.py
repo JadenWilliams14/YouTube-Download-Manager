@@ -43,14 +43,18 @@ if "youtube.com" in url:
         if os.path.exists(output):
             try:
                 stream.download(output)
+            except PermissionError:
+                print("\nYou do not have permissions for this folder")
             except Exception as e:
-                print("An unexpected error occured during download: ", e)
+                print("\nAn unexpected error occured during download: ", e)
         else:
             os.makedirs(output)
             try:
                 stream.download(output)
+            except PermissionError:
+                print("\nYou do not have permissions for this folder")
             except Exception as e:
-                print("An unexpected error occured during download: ", e)
+                print("\nAn unexpected error occured during download: ", e)
         tqdm_instance.close()
 else:
     print("Please at least provide a youtube.com url")
