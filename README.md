@@ -8,7 +8,11 @@
 - **Installation and usage**
   
   **Need to install dependencies**:
+
   pip install pytubefix
+  
   pip install tqdm
+
   **Then you can run the program from terminal**
+
   ex: python main.py --url "https://www.youtube.com/watch?v=..." --output "my_downloads" --resolution "1080p"
