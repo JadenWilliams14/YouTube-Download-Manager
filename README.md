@@ -6,6 +6,7 @@
 4. **Gracefully handles errors** (invalid URLs, permission problems, connection failures, etc.)
 
 - **Installation and usage**
+  
   **Need to install dependencies**:
   pip install pytubefix
   pip install tqdm
