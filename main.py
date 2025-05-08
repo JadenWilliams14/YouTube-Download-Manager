@@ -26,26 +26,31 @@ output = args.output
 
 # If youtube.com is in the URL, then it could plausibly be a YouTube link.
 if "youtube.com" in url:
-    yt = YouTube(url, on_progress_callback=progress_function)
-
-    # if the resolution is not specified, the stream will be the highest resolution
-    if resolution == None:
-        stream = yt.streams.get_highest_resolution()
+    try:
+        yt = YouTube(url, on_progress_callback=progress_function)
+    except Exception:
+        print("Could not find a Youtube video with that URL")
     else:
-        stream = yt.streams.filter(res=resolution).first()
+        # if the resolution is not specified, the stream will be the highest resolution
+        if resolution == None:
+            stream = yt.streams.get_highest_resolution()
+        else:
+            stream = yt.streams.filter(res=resolution).first()
 
-    tqdm_instance = tqdm(total=stream.filesize, unit="B",
-                         unit_scale=True, desc=stream.title, ascii=True)
-    # if the folder to download video exists, then download video there. If not, then make the folder and download
-    if os.path.exists(output):
-        try:
-            stream.download(output)
-        except Exception as e:
-            print("An unexpected error occured: ", e)
-    else:
-        os.makedirs(output)
-        try:
-            stream.download(output)
-        except Exception as e:
-            print("An unexpected error occured: ", e)
-    tqdm_instance.close()
+        tqdm_instance = tqdm(total=stream.filesize, unit="B",
+                             unit_scale=True, desc=stream.title, ascii=True)
+        # if the folder to download video exists, then download video there. If not, then make the folder and download
+        if os.path.exists(output):
+            try:
+                stream.download(output)
+            except Exception as e:
+                print("An unexpected error occured during download: ", e)
+        else:
+            os.makedirs(output)
+            try:
+                stream.download(output)
+            except Exception as e:
+                print("An unexpected error occured during download: ", e)
+        tqdm_instance.close()
+else:
+    print("Please at least provide a youtube.com url")
